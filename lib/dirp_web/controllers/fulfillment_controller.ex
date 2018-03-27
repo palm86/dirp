@@ -8,7 +8,9 @@ defmodule DirPWeb.FulfillmentController do
       |> Map.put("cover_amount", data["cover_amount_cents"] * 100) # convert the cents to R
       |> Map.take(["cover_amount", "has_spouse", "number_of_children", "type"]) # Take only the allowed fields
 
-    response = DirP.Root.Insurance.Quote.create(data) |> IO.inspect()
+    response =
+      DirP.Root.Insurance.client()
+      |> DirP.Root.Insurance.Quote.create(data)
 
     suggested_premium =
       response.body
